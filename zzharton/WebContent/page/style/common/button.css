@@ -1,0 +1,100 @@
+@charset "UTF-8";
+charset "utf-8";
+
+*, html, body {-webkit-box-sizing:border-box;box-sizing:border-box; color:#333; font-size:13px; font-family: 'malgun gothic', sans-serif;}
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,a{margin:0;padding:0;-webkit-text-size-adjust:100%;}
+header,hgroup,article,nav,footer,figure,figcaption,canvas,section{display:block}
+html, body {height:100%;}
+a {text-decoration: none;}
+.wrapper {height:100%;}
+.container {float:right; padding: 30px; width:calc(100% - 212px);height:100%;box-sizing: border-box;}
+ul {list-style:none;}
+/* header */
+/* header {position: fixed; left:0; top: 0; bottom:0; height:100%; width:212px; background:#0066d8;}
+header h1 {padding: 15px; color:#fff;} */
+nav ul li a {display:inline-block; width:100%;  padding:15px; color:#fff; font-size:17px; font-weight:bold; border-bottom: 1px solid #fff;box-sizing: border-box; pointer-events:none;}
+nav ul li:first-child a {pointer-events:auto;}
+nav ul li:first-child {border-top:1px solid #fff;}
+nav ul li a:hover {background:rgba(0,0,0,0.3);}
+
+h1 {margin-bottom:10px; font-size: 25px;}
+h2 {margin-bottom:10px; padding-left:15px; font-size: 20px;}
+h3 {margin-bottom:10px; padding-left:20px; font-size: 17px;}
+section {margin-bottom:50px;}
+section>ol {padding: 0 35px;margin-bottom: 30px;}
+section>ol::after {display: block; content: ''; clear:both;}
+section>ol>li {float:left; width:50%; margin-bottom: 15px;}
+section>ol>li dl dt {margin-bottom:10px; font-size:15px;}
+section>ol>li dl dd {margin-bottom:10px;}
+section>ol>li dl dd pre {position:relative; display:inline-block; padding:24px 12px 12px; border:1px solid #d2d2d2; background:#f5f5f5;}
+section>ol>li dl dd pre .tit {position:absolute; top:-1px; left:-1px; display:inline-block; width:91px; height:19px; font-size:11px; font-weight:bold; color:#fff; line-height: 20px; border:1px solid #80ae4b; text-align:center;  background:#74bf1f;}
+/* icon buttons */
+.icon_btn {display:inline-block; width:22px; height:26px; border:1px solid #8a8c90; border-radius:3px; background-color:#96989e; background-position: 50% 50%; background-repeat: no-repeat;}
+.icon_btn.light_type {border:1px solid #ababab; background-color:#f0f0f0;}
+.icon_btn.icon_plus {background-image: url('../img/icon_plus.gif');}
+.icon_btn.icon_minus {background-image: url('../img/icon_minus.gif');}
+.icon_btn.icon_prev {background-image: url('../img/icon_prev.gif');}
+.icon_btn.icon_next {background-image: url('../img/icon_next.gif');}
+.icon_btn.icon_up {background-image: url('../img/icon_up.gif');}
+.icon_btn.icon_down {background-image: url('../img/icon_down.gif');}
+.icon_btn.icon_plus.light_type {background-image: url('../img/icon_plus_type2.gif');}
+.icon_btn.icon_minus.light_type {background-image: url('../img/icon_minus_type2.gif');}
+.icon_btn.icon_prev.light_type {background-image: url('../img/icon_prev_type2.gif');}
+.icon_btn.icon_next.light_type {background-image: url('../img/icon_next_type2.gif');}
+.icon_btn.icon_up.light_type {background-image: url('../img/icon_up_type2.gif');}
+.icon_btn.icon_down.light_type {background-image: url('../img/icon_down_type2.gif');}
+/* page buttons */
+.button a {display:inline-block;height:26px; padding:0 15px; border-radius: 3px; color:#fff; font-size:12px; font-weight:bold; line-height: 23px;}
+.button.red a {border:1px solid #c95067; background:#df5570;}
+.button.red a:hover {background:#e7718b;}
+.button.teal a {border:1px solid #3288a0; background:#3995af;}
+.button.teal a:hover {background:#54abc1;}
+.button.brown a {border:1px solid #896768; background:#a37a7c;}
+.button.brown a:hover {background:#b79495;}
+.button.orange a {border:1px solid #d56b3a; background:#ed7b46;}
+.button.orange a:hover {background:#ed7b46;}
+.button.skyblue a {border:1px solid #239fce; background:#2dadde;}
+.button.skyblue a:hover {background:#47bfe6;}
+.button.lightbrown a {border:1px solid #a18d6d; background:#b9a27e;}
+.button.lightbrown a:hover {background:#d6c7ad;}
+.button.yellow a {border:1px solid #d7a136; background:#f6b031;}
+.button.yellow a:hover {background:#f8c24b;}
+.button.blue a {border:1px solid #307bcb; background:#3688e0;}
+.button.blue a:hover {background:#51a0e8;}
+.button.navy a {border:1px solid #5c6c87; background:#697c9a;}
+.button.navy a:hover {background:#8495b0;}
+.button.lightgreen a {border:1px solid #899b17; background:#97ad10;}
+.button.lightgreen a:hover {background:#adbf21;}
+.button.violet a {border:1px solid #535bae; background:#5a64c4;}
+.button.violet a:hover {background:#767fd2;}
+.button.gray a {border:1px solid #7e7e7e; background:#909090;}
+.button.gray a:hover {background:#a7a7a7;}
+.button.green a {border:1px solid #4c861d; background:#589d1f;}
+.button.green a:hover {background:#74b236;}
+.button.purple a {border:1px solid #7754a5; background:#905bc0;}
+.button.purple a:hover {background:#a777cf;}
+.button.darkgreen a {border:1px solid #288d7b; background:#229782;}
+.button.darkgreen a:hover {background:#39ad9b;}
+.button.pink a {border:1px solid #b7579f; background:#d75ab8;}
+.button.pink a:hover {background:#e176c8;}
+
+.button.red.light_type a {color:#de4931; border:1px solid #e9aca4; background:#feedeb;}
+.button.red.light_type a:hover {background:#fde0dd;}
+.button.pink.light_type a {color:#c26ead; border:1px solid #d1b0ce; background:#fceafa;}
+.button.pink.light_type a:hover {background:#fadbf6;}
+.button.orange.light_type a {color:#e69310; border:1px solid #edccaf; background:#fff2e6;}
+.button.orange.light_type a:hover {background:#ffe9d5;}
+.button.gray.light_type a {color:#666; border:1px solid #b8b8b8; background:#eee;}
+.button.gray.light_type a:hover {background:#e2e2e2;}
+.button.lightgreen.light_type a {color:#8a9712; border:1px solid #c0c695; background:#eef1d9;}
+.button.lightgreen.light_type a:hover {background:#e2e7c0;}
+.button.white.light_type a {color:#666; border:1px solid #b8b8b8; background:#fff;}
+.button.white.light_type a:hover {background:#f1f1f1;}
+.button.green.light_type a {color:#57a157; border:1px solid #aacdaa; background:#dbf1db;}
+.button.green.light_type a:hover {background:#c3e7c3;}
+.button.teal.light_type a {color:#3a9eaa; border:1px solid #a2d7dc; background:#d0f2f6;}
+.button.teal.light_type a:hover {background:#b2e9ef;}
+.button.blue.light_type a {color:#507eb2; border:1px solid #b9cce0; background:#deecfd;}
+.button.blue.light_type a:hover {background:#c8dffc;}
+.button.violet.light_type a {color:#756bad; border:1px solid #c8c5d8; background:#eae6fc;}
+.button.violet.light_type a:hover {background:#dbd5fa;}

@@ -1,0 +1,56 @@
+@charset "UTF-8";
+body {font:normal 12px Malgun Gothic,'굴림',Gulim,helvetica,arial,sans-serif;color:#25282d;background:#f1f1f1;margin:0px;}
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,a{margin:0;padding:0;-webkit-text-size-adjust:100%;}
+header,hgroup,article,nav,footer,figure,figcaption,canvas,section{display:block}
+
+	#main-frame{
+	/* 	min-width:1900px; min-height:900px;  */
+		min-width:1510px; min-height:735px; 
+		overflow-x:auto; overflow-y:auto;
+	}
+	
+	#main-top{
+		height:110px; background:#FFEA00; 
+	}
+	
+	#main-top-header{
+		padding-top:26px; padding-left:25px; color:#4a4f59; font-size:40px;
+	}
+	#main-top-box{
+		width:135px; position:absolute; top:55px; right:0px;
+	}
+	
+/* 	.header-img-box{
+		 width:50px; margin:7px; height:50px; border:1px dashed #c3c4c7;
+	}*/
+	.main-btn-img{
+		width:30px;
+		height:30px;
+	} 
+	
+	#main-bottom{
+		/* min-height: 810px;  */
+		min-height: 600px; 
+		margin: 0px;padding: 15px; width: 98%; border:0px;overflow:auto;display: block;
+	}
+	
+	/* #bodyiframe{  min-height: 810px; margin: 0px;padding: 0px;width: 100%;border: 0px;overflow: auto;display: block; } */
+	#main-body{
+		overflow:auto; padding-top:25px; padding-left:25px; border-radius:7px; border:1px solid #c3c4c7; height:585px; background:white; width:1475px;
+	}
+	#main-contents{
+		background:white; width:1000px; height:300px;border:1px dashed #c3c4c7; margin-top:127px; margin-left:227px;
+	}
+	
+/* Module Widths */
+.module-wrap{float:left;width:100%;margin-bottom:20px}
+.module-wrap > div{padding:0 10px;float:left}
+.width-full {width:100%;}
+.width-half {width:50%;}
+.width-quarter {width:25%;}
+.width-3quarter {width:75%;}
+.width-oneThird {width:32%;}
+.width-twoThird {width:65%;}
+.width-oneFifth {width:20%;}
+.width-onesixth {width:16.666%;}
+.width-oneseventh {width:14.285%;}
