@@ -31,6 +31,7 @@
 <script type="text/javascript">
 $(document).ready(function() {	
 	fnEvent();
+	fnDrawGrid();
 });
 
 function fnEvent(){
@@ -151,6 +152,21 @@ function fnExportExcel(){
         }
     });
 }
+function fnDrawGrid(){
+	var options = {
+		colNames:['채팅테스트아이디','채팅업무카테고리코드'
+		//mapping column
+		,colModel:[
+			{name:'DT_START', classes:'pointer',width:25,align:'center'}
+			,{name:'DT_END', classes:'pointer',width:25,align:'center'}
+		]
+		, height:595
+		, autowidth:true
+		, multiselect:true
+		, onCellSelect: function(rowid,status,rowdata){}
+	};
+	uxl.grid('list', options);
+}
 </script>
 <title>짜트온</title>
 </head>
@@ -198,12 +214,17 @@ function fnExportExcel(){
 						</div>
 					</div>					
 				</div>
-				<div class="width-3quarter">
-					<article id="collection1LevelTitle" class="module column">
-						<div class="module-content">
-
+				<div class="width-3quarter" style="width:70%; margin-top:20px;">
+					<div class="module-content">
+						<h3 style="padding:0px;">원문 목록</h3>	
+						<div id="div_grid">
+							<div class="list_table">
+								<div class="ub-layout list">
+									<table class="ub-control grid" id="list" name="list" style="border:2px solid gray;height:490px;width:100%;text-align:center;"></table> 
+								</div>
+							</div>
 						</div>
-					</article>
+					</div>
 				</div>				
 			</div>
 		</div>
