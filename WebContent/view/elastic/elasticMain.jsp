@@ -17,6 +17,7 @@
 <head>
 <link rel="stylesheet" href="/zzharton/page/style/common/base.css">
 <link rel="stylesheet" href="/zzharton/page/style/common/button.css">
+<link rel="stylesheet" type="text/css" href="/zzharton/page/jqGrid3/css/ui.jqgrid.css"/>
 <meta charset="UTF-8" />
 <style>
 	#img-file-download{
@@ -25,9 +26,46 @@
 	#refresh-img{
 		width:20px; height:20px;
 	}
+	
+	.tbl-header th{
+		background:#8a96b4;border:1px solid #788299 !important; height:30px;margin:0; padding:0; color:#fff; font-size:14px; letter-spacing:-1px; line-height: 19px;
+	}
+	.srh-btn{
+		position: absolute;bottom: 7px;right: 20px;display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+	}
+	.srh-btn a{
+		padding: 0 15px 0 8px;
+    border: 1px solid #585f6b;
+    background: #656d7c;
+    display: inline-block;
+    height: 25px;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 23px;
+	}
+	.srh-btn:hover a{
+		background: #8b929f;
+	}
+	.srh-btn a::before {
+	    display: inline-block;
+	    content: '';
+	    width: 13px;
+	    height: 13px;
+	    vertical-align: middle;
+	    margin-top: -2px;
+	    margin-right: 4px;
+	    background: url(/zzharton/page/image/common/icon_srch-glass.png) no-repeat 0 0;
+	}	
 </style>
 <script type="text/javascript" src="/zzharton/page/js/jquery/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/zzharton/page/js/jquery/plugin/jquery.form.js"></script>
+
+<script type="text/javascript" charset="UTF-8" src="<c:url value='/zzharton/page/jqGrid/js/i18n/grid.locale-kr.js'/>"></script>
+<script type="text/javascript" charset="UTF-8" src="<c:url value='/zzharton/page/jqGrid2/js/jquery.jqGrid.min.js'/>"></script>
 <script type="text/javascript">
 $(document).ready(function() {	
 	fnEvent();
@@ -153,19 +191,7 @@ function fnExportExcel(){
     });
 }
 function fnDrawGrid(){
-	var options = {
-		colNames:['채팅테스트아이디','채팅업무카테고리코드'
-		//mapping column
-		,colModel:[
-			{name:'DT_START', classes:'pointer',width:25,align:'center'}
-			,{name:'DT_END', classes:'pointer',width:25,align:'center'}
-		]
-		, height:595
-		, autowidth:true
-		, multiselect:true
-		, onCellSelect: function(rowid,status,rowdata){}
-	};
-	uxl.grid('list', options);
+	
 }
 </script>
 <title>짜트온</title>
@@ -214,16 +240,47 @@ function fnDrawGrid(){
 						</div>
 					</div>					
 				</div>
-				<div class="width-3quarter" style="width:70%; margin-top:20px;">
+				<div class="width-3quarter" style="width:70%; margin-top:20px;table-layout: fixed;">
 					<div class="module-content">
 						<h3 style="padding:0px;">원문 목록</h3>	
-						<div id="div_grid">
-							<div class="list_table">
-								<div class="ub-layout list">
-									<table class="ub-control grid" id="list" name="list" style="border:2px solid gray;height:490px;width:100%;text-align:center;"></table> 
-								</div>
-							</div>
-						</div>
+					    	<div style="position: relative;border: 1px solid #c3c4c7;background: #f7f8fc;padding: 9px 15px;margin-bottom: 12px;">
+					    	<table id="search-table">
+					        	<colgroup>
+					        		<col style="width:5%">
+					        		<col style="width:10%">
+					        		<col style="width:10%">					        		
+					        		<col style="width:55%">
+					        		<col style="width:10%">
+					        	</colgroup>
+					        	<tbody>
+						        	<tr>
+						        		<th>키워드</th>
+						        		<td><input type="text" style="width:120px;"></td>
+						        	</tr>
+					        	</tbody>					    	
+					    	</table>
+					    	<span class="srh-btn"><a>검색</a></span>
+					    	</div>
+					    	<div class="tableWrap">
+					        <table id="result-table" style="table-layout: fixed;max-height:450px; overflow-y:auto;width:100%;border:0 !important; border-bottom:1px solid #d4d4d4 !important;">
+					        	<colgroup>
+					        		<col style="width:5%">
+					        		<col style="width:10%">
+					        		<col style="width:10%">					        		
+					        		<col style="width:55%">
+					        		<col style="width:10%">
+					        	</colgroup>
+					        	<tbody id="grid-result">
+						        	<tr class="tbl-header">
+						        		<th>문서키</th>
+						        		<th>수집코드</th>
+						        		<th>글쓴이</th>
+						        		<th>문서내용</th>
+						        		<th>작성일자</th>
+						        	</tr>
+					        	</tbody>
+					        </table>  
+					    </div>
 					</div>
 				</div>				
 			</div>
