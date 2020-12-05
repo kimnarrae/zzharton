@@ -93,12 +93,12 @@ $(".header-img-box").hide();
 			<div id="button-contents">
 				<div class="btn-area">
 					<span id="btn-elastic" class="button teal">
-						<a href="#" onclick="location.href='view/elastic/elasticMain.jsp'">원문에서 추출하기</a>
+						<a href="#" onclick="location.href='view/elastic/elasticMain.jsp'">키워드 추출 프로그램</a>
 					</span>
 				</div>
 				<div class="btn-area">
 					<span id="btn-dashboard" class="button darkgreen">
-						<a href="#" onclick="location.href='view/upload/uploadMain.jsp'">키워드로 조회하기</a>
+						<a href="#" onclick="location.href='view/upload/uploadMain.jsp'">대시보드 프로그램</a>
 					</span>
 				</div>
 			</div>

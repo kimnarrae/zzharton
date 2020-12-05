@@ -28,10 +28,10 @@ public class DocController {
 		this.restTemplate = new RestTemplate(factory);
 	}
 	
-	public static void main(String[] args) {
+	public String getSearchDocument(String query) {
+
 		String urlPath = "localhost:9200/doc/_search";
-		String query = "";
-		String body = "";
+		String result = "";
 		
 		String ip = "localhost";
 		Integer port = 9200;
@@ -39,21 +39,31 @@ public class DocController {
 		try {
 			//URL url = new URL(urlPath);
 			RestClient restClient = RestClient.builder(new HttpHost(ip,port,schema)).build();
-			Request request = new Request("POST","doc/_search/");
-		//	request.setJsonEntity(query);
+			Request request = new Request("POST","document/_search/");
+			if(!"".equals(query)) {
+				request.setJsonEntity(query);
+			}			
 			Response response = restClient.performRequest(request);
 			
 			if(response.getStatusLine().getStatusCode() == 200) {
-				body = EntityUtils.toString(response.getEntity());
+				result = EntityUtils.toString(response.getEntity());
 			}else {
 				System.out.println(response.getStatusLine().getStatusCode());
 			}
 			
 			restClient.close();
-			System.out.println(body);
+			System.out.println(result);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		return result;
+	}
+	
+	public static void main(String[] args) {
+		String query = "{\"size\":10000,\"query\":{\"bool\":{\"must\":[{\"wildcard\":{\"writer\":\"KBS*\"}},{\"match\":{\"contents\":\"코로나\"}}]}},\"from\":0,\"sort\":[{\"date\":\"desc\"}],\"aggs\":{\"group_by_state\":{\"terms\":{\"field\":\"date\"},\"aggs\":{\"date_count\":{\"value_count\":{\"field\":\"date\"}}}}}}";
+		DocController docController = new DocController();
+		String result = docController.getSearchDocument(query);
+		System.out.println(result);
 	}
 }
