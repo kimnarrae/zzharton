@@ -109,10 +109,16 @@
 	    vertical-align: middle;
 	    margin-left: 105px;
 	}
+	
+	.cal-wrap {position:relative;display:inline-block;}
+	.cal-wrap .input-text {margin:0;display:inline-block;font:normal 12px Malgun Gothic,'����',Gulim,helvetica,arial,sans-serif;}
+	.cal-wrap .btn-cal {position:absolute;top:-1px; right:0px; width:20px; height:20px;background:url(/zzharton/page/image/common/ico-cal.gif) no-repeat center;border:0;cursor:pointer;}
+	.input-text{
+		border: 1px solid #c3c3c3; text-align:center;
+	}
 </style>
 <script type="text/javascript" src="/zzharton/page/js/jquery/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/zzharton/page/js/jquery/plugin/jquery.form.js"></script>
-
 <script type="text/javascript">
 $(document).ready(function() {	
 	fnEvent();
@@ -177,9 +183,9 @@ function createData() { // 1. 자바스크립트 객체 형태로 전달
 
 function fnGetDocData(){
     // FormData 객체 생성
-/*     var formData = new FormData($('#searchForm')[0]);
+     var formData = new FormData($('#searchForm')[0]);
     formData.append("srhKeywordType",$("#srh-keyword-type option:selected").val());
-    formData.append("srhKeyword",$("#srh-keyword").val()); */
+    formData.append("srhKeyword",$("#srh-keyword").val()); 
     var obj = new Object();
     obj.srhKeywordType = $("#srh-keyword-type option:selected").val();
     obj.srhKeyword = $("#srh-keyword").val();
@@ -197,31 +203,8 @@ function fnGetDocData(){
         processData: false,
         contentType: false,
         success : function(data) {
-        	$("#file").val("");
-        	$(".move-dashboard-etc").remove();
-        	
-        	if(data == null || data == ""){
-        		$("#div-warning-msg label").text("엑셀 데이터를 다시 입력해주세요.");
-        		$("#btn-refresh").click();
-        	}else if(data.match('^ERROR')){
-        		alert(data);
-        		$("#btn-refresh").click();
-        	}else{
-	            $("#grid-result").empty();	            
-	            var jsonObj = JSON.parse(data);  
-	            if(data.length > 0){
-	            	var html = "";
-		            for(var i=0; i<data.length; i++){
-		            	html += "<tr>";
-			            
-		            	html += "</tr>";
-		            }
-		            
-		            
-		            $("#grid-result").append(html);
-	            }
-        	}
-
+        	var jsonData = JSON.parse(data);
+        	setResultTable(jsonData);
         },
         error : function(xhr, status) {
             alert(xhr + " : " + status);
@@ -229,6 +212,63 @@ function fnGetDocData(){
         }
     });	
 }
+
+function setResultTable(jsonData){
+	//초기화
+	$("#info-result").empty();
+	$("#grid-result").empty();
+	$(".search-data").val("");
+
+	if(jsonData.length > 0){
+		var infoObj = jsonData[0];
+		console.log(infoObj);
+		var infoHtml = "<tr>";
+			infoHtml += "	<th>인덱스</th>";
+			infoHtml += "	<td>"+infoObj.indexName+"</td>";
+			infoHtml += "	<th>조회 문서 수</th>";
+			infoHtml += "	<td>"+infoObj.totalCount+"</td>";
+			infoHtml += "</tr>";
+			infoHtml = "<tr>";
+			infoHtml += "	<th colspan='4'>검색조건</th>";
+			infoHtml += "</tr>";
+			infoHtml = "<tr>";
+			infoHtml += "	<th>일자</th>";
+			infoHtml += "	<td>"+chgNullValue($("#dtDate").val())+"</td>";
+			infoHtml += "	<th>작성자</th>";
+			infoHtml += "	<td>"+chgNullValue($("#writer").val())+"</td>";
+			infoHtml += "	<th>키워드</th>";
+			infoHtml += "	<td>"+chgNullValue($("#srh-keyword").val())+"</td>";
+			infoHtml += "	<th>제외키워드</th>";
+			infoHtml += "	<td>"+chgNullValue($("#srh-not-keyword").val())+"</td>";			
+			infoHtml += "</tr>";
+			
+			
+			
+		$("#info-result").append(infoHtml);
+		
+		for(var i=1; i<jsonData.length; i++){			
+			var resultObj = jsonData[i];
+			console.log(resultObj);
+			var html = "<tr>";
+				html += "	<td>"+resultObj.key+"</td>";
+				html += "	<td>"+resultObj.collect+"</td>";
+				html += "	<td>"+resultObj.user+"</td>";
+				html += "	<td>"+resultObj.contents+"</td>";
+				html += "	<td>"+resultObj.date+"</td>";
+			
+			$("#grid-result").append(html);
+			
+		}
+	}
+}
+
+function chgNullValue(str){
+	if(str == "" || str == null){
+		str = "-"
+	}
+	return str;
+}
+
 function fnExportExcel(){
     // FormData 객체 생성
     var formData = new FormData($('#uploadForm')[0]);
@@ -360,13 +400,13 @@ function fnDrawGrid(){
 							        	<tr>							        	
 							        		<th>일자</th>
 							        		<td>
-							        			<input id="dtDate" type="text" style="width:206px;">
+						              			<input title="시작시간" id="dtDate" type="text" class="input-text search-data" value="" style="width:206px;" placeholder="날짜형식 : YYYY-MM-DD">
 							        		</td>
 							        	</tr>
 							        	<tr>							        	
 							        		<th>작성자</th>
 							        		<td>
-							        			<input id="writer" type="text" style="width:206px;">
+							        			<input class="input-text search-data" id="writer" type="text" style="width:206px;">
 							        		</td>
 							        	</tr>							        	
 							        	<tr>							        	
@@ -376,13 +416,13 @@ function fnDrawGrid(){
 							        				<option value="OR">OR</option>
 							        				<option value="AND">AND</option>
 							        			</select>	
-							        			<input id="srh-keyword" type="text" style="width:150px;">
+							        			<input class="input-text search-data" id="srh-keyword" type="text" style="width:150px;">
 							        		</td>							        		
 							        	</tr>
 							        	<tr>
 							        		<th>제외키워드</th>
 							        		<td>
-							        			<input id="" type="text" style="width:206px;">
+							        			<input class="input-text search-data" id="srh-not-keyword" type="text" style="width:206px;">
 							        		</td>
 							        	</tr>
 							        	<tr>
@@ -404,6 +444,19 @@ function fnDrawGrid(){
 					<div class="module-content">
 							<h3 style="padding:0px;">원문 정보</h3>	
 							<div style="height:120px;margin-top:10px;position: relative;border: 1px solid #c3c4c7;background: #f7f8fc;padding: 9px 15px;margin-bottom: 12px;">
+						    	<table>
+						        	<colgroup>
+						        		<col style="width:10%">
+						        		<col style="width:10%">
+						        		<col style="width:10%">
+						        		<col style="width:10%">
+						        		<col style="width:10%">
+										<col style="width:25%">
+						        		<col style="width:10%">
+						        		<col style="width:25%">		
+						        	</colgroup>
+						        	<tbody id="info-result"></tbody>					    	
+						    	</table>
 							</div>
 					    	<h3 style="padding:0px;">원문 목록</h3>	
 					    	<div class="tableWrap" id="table-area">

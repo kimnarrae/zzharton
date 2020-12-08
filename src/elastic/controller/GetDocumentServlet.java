@@ -29,21 +29,35 @@ public class GetDocumentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+//		JSONObject jsonObj = new JSONObject();
+//		jsonObj.put("srhKeywordType", "OR");
+//		jsonObj.put("srhKeyowrd", "코로나");
+//		jsonObj.put("notKeyowrd", "");
+//		jsonObj.put("collectCode", "KBS");
+//		jsonObj.put("srhDate", "2020-01-01");
+//		jsonObj.put("writer", "KBS");
+		
 		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("srhKeywordType", "OR");
-		jsonObj.put("srhKeyowrd", "코로나");
-		jsonObj.put("notKeyowrd", "");
-		jsonObj.put("collectCode", "KBS");
-		jsonObj.put("srhDate", "2020-01-01");
-		jsonObj.put("writer", "KBS");
+//		jsonObj.put("srhKeywordType", "OR");
+//		jsonObj.put("srhKeyowrd", "문서");
+//		jsonObj.put("notKeyowrd", "");
+//		jsonObj.put("collectCode", "KBS");
+//		jsonObj.put("srhDate", "2020-11-05");
+//		jsonObj.put("writer", "KBS");
 		
 		ElasticUtil util = new ElasticUtil();		
 		String query = util.setQuery(jsonObj);
 		
 		DocController docController = new DocController();
 		String result = docController.getSearchDocument(query);
-		System.out.println(result);
 		
+		JSONObject resultObj = util.setResultStrToJSONObject(result);
+		String resultData = util.setResult(resultObj);
+		
+		
+		response.setContentType("text/html; charset=utf-8");
+		response.getWriter().append(resultData);
 	}
 
 	/**

@@ -39,7 +39,7 @@ public class DocController {
 		try {
 			//URL url = new URL(urlPath);
 			RestClient restClient = RestClient.builder(new HttpHost(ip,port,schema)).build();
-			Request request = new Request("POST","document/_search/");
+			Request request = new Request("POST","doc/_search/");
 			if(!"".equals(query)) {
 				request.setJsonEntity(query);
 			}			
@@ -52,7 +52,6 @@ public class DocController {
 			}
 			
 			restClient.close();
-			System.out.println(result);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
