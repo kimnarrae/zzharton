@@ -268,11 +268,11 @@ public class ElasticUtil {
 
 	public static void main(String[] args) {
 		JSONObject searchObj = new JSONObject();
-		searchObj.put("srhKeywordType", "OR");
-		searchObj.put("srhKeyowrd", "문서");
+//		searchObj.put("srhKeywordType", "OR");
+//		searchObj.put("srhKeyowrd", "문서");
 //		searchObj.put("notKeyowrd", "");
 //		searchObj.put("collectCode", "KBS");
-		searchObj.put("srhDate", "2020-11-05");
+//		searchObj.put("srhDate", "2020-11-05");
 //		searchObj.put("writer", "KBS");
 		
 		

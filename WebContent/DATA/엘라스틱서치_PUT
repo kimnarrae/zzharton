@@ -1,0 +1,69 @@
+PUT doc
+{
+  "settings": {
+    "number_of_shards":   5,
+    "number_of_replicas": 2,
+    "max_result_window" : 1000
+  },
+  "mappings": {
+    "properties": {
+      "key":{ "type": "keyword" },
+      "collect":{ "type": "keyword" },
+      "writer":{ "type": "keyword" },
+	  "title":{ "type": "text" },
+	  "keyword_contents" :  { "type": "text" },
+      "contents" :  { "type": "text" },
+      "date":  { "type": "date", "format": "yyyy-MM-dd HH:mm:ss"}
+    }
+  }
+}
+
+//ex) type - keyword : = 조건, text : like 조건 사용할 때
+
+# *** > mappings > properties> [필드명] >  ignore_above : 지정한 크기 이상의 문자열을 무시합니다.
+
+
+
+
+
+
+
+PUT doc
+{
+  "settings": {
+    "number_of_shards":   5,
+    "number_of_replicas": 2,
+    "max_result_window" : 1000
+  },
+  "mappings": {
+    "properties": {
+      "key":{ "type": "keyword" },
+      "collect":{ "type": "keyword" },
+      "user":{ "type": "keyword" },
+	  "title":{ "type": "text" },
+      "contents" :  { "type": "text" },
+      "date":  { "type": "date", "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"}
+    }
+  }
+}
+
+
+
+PUT document
+{
+  "settings": {
+    "number_of_shards":   5,
+    "number_of_replicas": 2,
+    "max_result_window" : 1000
+  },
+  "mappings": {
+    "properties": {
+      "key":{ "type": "keyword" },
+      "collect":{ "type": "keyword" },
+      "writer":{ "type": "keyword" },
+      "contents" :  { "type": "text" },
+	  "keyword_contents" :  { "type": "text" },
+      "date":  { "type": "date", "format": "yyyy-MM-dd HH:mm:ss"}
+    }
+  }
+}

@@ -74,7 +74,7 @@
 	    /* width: 99.4%; 
     	 margin-left: 2px; */
     	/*height:300px;*/ 
-    	height: 311px;
+    	height: 365px;
 	}
 	#grid-result tr > td {
 		border-left-width: 1px;
@@ -417,8 +417,8 @@ function fnDrawGrid(){
 				</div>
 				<div class="width-3quarter" style="width:70%; margin-top:20px;table-layout: fixed;">
 					<div class="module-content">
-							<h3 style="padding:0px;">검색 조건</h3>	
-							<div style="height:20px;margin-top:10px;position: relative;border: 1px solid #c3c4c7;background: #f7f8fc;padding: 9px 15px;margin-bottom: 12px;">
+							<h3 style="padding:0px;display:none;">검색 조건</h3>	
+							<div style="display:none;height:20px;margin-top:10px;position: relative;border: 1px solid #c3c4c7;background: #f7f8fc;padding: 9px 15px;margin-bottom: 12px;">
 						    	<table>
 						        	<colgroup>
 						        		<col style="width:10%">
