@@ -55,9 +55,7 @@ public class ExcelUploadService {
 				Row row = sheet.getRow(idx);
 							
 				String data = checkCellData(row,0).trim();
-				String cnt = checkCellData(row,1).trim();
-				
-				System.out.println(data + " / "+cnt);				
+				String cnt = checkCellData(row,1).trim();			
 				
 				if("".equals(data) || "".equals(cnt)) {
 					continue;
@@ -69,7 +67,6 @@ public class ExcelUploadService {
 					resultList.add(uploadVo);
 				}
 			}
-			System.out.println(resultList.toString());
 			
 			return resultList;
 			

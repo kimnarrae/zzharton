@@ -1,10 +1,17 @@
 package elastic.service;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,10 +19,30 @@ import org.json.simple.parser.ParseException;
 
 import com.google.gson.JsonElement;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import elastic.controller.DocController;
 
 public class ElasticUtil {
-
+	
+	public static String checkFileType(String filePath) {
+		File file = new File(filePath);
+		String fileType = FilenameUtils.getExtension(filePath);
+		
+		return fileType;
+	}
+	
+	public static List<String> getKoreanPostpositions(){
+		String delWordStr = "이라면서,수있다,라면서,것으로,이라고,이라면,됐으며,했으며,하였으며,으로써,있다,이다,조차,등에,했다,됐다,까지,했고,됐고,마저,에다,이랑,되어,이며,만에,로서,하여,로써,하고,라고,보다,된다,에서,으로,께서,들은,면서,도,만,는,은,에,며,랑,과,와,고,와,로,에,를,을,가,이,된,돼";
+		
+		String[] delWord = delWordStr.split(",");
+		Arrays.sort(delWord, Comparator.comparing(String::length));
+		
+		List<String> koreanPostpositions = new ArrayList<>(Arrays.asList(delWord));
+		Collections.reverse(koreanPostpositions);
+		
+		return koreanPostpositions;
+	}
+	
 	public String setQuery(JSONObject jsonObj) {
 		String query = "";
 		
@@ -31,8 +58,8 @@ public class ElasticUtil {
 		
 		
 		//일자
-		if(jsonObj.get("srhDate") != null) {
-			String dtDate = jsonObj.get("srhDate").toString();
+		if(jsonObj.get("dtDate") != null) {
+			String dtDate = jsonObj.get("dtDate").toString();
 			
 			if("".equals(dtDate)) {
 				matchJson = new JSONObject();
@@ -150,8 +177,8 @@ public class ElasticUtil {
 		}
 		
 		//제외 키워드
-		if(jsonObj.get("notKeyowrd") != null) {
-			String notKeyowrd = jsonObj.get("notKeyowrd").toString();
+		if(jsonObj.get("srhNotKeyword") != null) {
+			String notKeyowrd = jsonObj.get("srhNotKeyword").toString();
 			if(!"".equals(notKeyowrd)) {
 				matchJson = new JSONObject();
 				matchSubJson = new JSONObject();
@@ -193,10 +220,12 @@ public class ElasticUtil {
 		queryJson.put("query", boolJson);
 		queryJson.put("sort", sortJsonArr);
 		queryJson.put("aggs", countJsonObj);
-	//	queryJson.put("from", 0);
-	//	queryJson.put("size", 10000);
+		queryJson.put("from", 0);
+		queryJson.put("size", 1000);
 		
 		query = queryJson.toJSONString();
+		
+		System.out.println(query);
 		
 		return query;
 
@@ -223,11 +252,11 @@ public class ElasticUtil {
 		JSONObject infoObj = new JSONObject();
 
 		JSONObject totalObj =  (JSONObject) hitsObj.get("total");
-		System.out.println(totalObj);
 		
 		infoObj.put("totalCount", totalObj.get("value"));
 		infoObj.put("indexName", "doc");
 		resultArr.add(infoObj);
+		
 		for(int i=0; i<hitsArr.size(); i++){ 
 			JSONObject result = (JSONObject) hitsArr.get(i);
 			resultArr.add((JSONObject) result.get("_source"));
@@ -254,8 +283,6 @@ public class ElasticUtil {
 		String result = docController.getSearchDocument(query);
 		JSONObject resultObj = util.setResultStrToJSONObject(result);
 		String resultData = util.setResult(resultObj);
-		
-		
 	}
 
 }

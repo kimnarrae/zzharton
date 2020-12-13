@@ -117,7 +117,7 @@ public class ExcelUploadServlet extends HttpServlet {
     private void getExcelData() {
     	String excelData = "";
     	
-    	if(filePath == null || dataType == "") {
+    	if(filePath == null || filePath == "") {
 			filePath = "C:\\Users\\김나래\\Desktop\\과제\\실무프로젝트\\form_upload_data3.xlsx";
 		}
 		

@@ -14,11 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.json.simple.JSONObject;
+
+import elastic.service.InsertDocumentService;
+import upload.service.ExcelUploadService;
 
 /**
  * Servlet implementation class ElasticExcelUpload
  */
-@WebServlet("/ElasticExcelUpload")
+@WebServlet("/InsertExcelDocument")
 public class ElasticExcelUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -32,13 +36,14 @@ public class ElasticExcelUploadServlet extends HttpServlet {
 	private static String name = "";
 	
 	private static boolean fgData = true;
+	
+	private static JSONObject resultObj = new JSONObject();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ElasticExcelUploadServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -80,24 +85,52 @@ public class ElasticExcelUploadServlet extends HttpServlet {
         	response.getWriter().append("ERROR:"+errorMsg);
         	return;
         }
-     
+        
+        String fgInsertStr = InsertDocumentService.insertElasticDoc(filePath);
+        
+        if(fgInsertStr.startsWith("ERROR")) {
+        	fgData = false;
+        }
+        
+        System.out.println(filePath);
+        // result data를 만든다.
+        response.setContentType("text/html; charset=utf-8");
+ 
+        if(fileName == null || fileName == "") {
+        	response.getWriter().append("ERROR:FILE 이름이 없습니다.");
+        	return;
+        }else {
+        	if(!fgData) {
+            	response.getWriter().append("ERROR:EXCEL DATA가 없습니다.");
+            	return;        		
+        	}else {
+                resultObj.put("name", name);
+                resultObj.put("fileName", fileName);
+                resultObj.put("contentType", contentType);
+                resultObj.put("fileSize", fileSize);
+                resultObj.put("filePath", filePath);
+                
+                response.getWriter().append(resultObj.toJSONString());
+        	}   
+        }
 	}
 	
 	//업로드한 정보가 파일인경우 처리
-    private void processUploadFile(FileItem item, String contextRootPath) throws Exception {
+	private void processUploadFile(FileItem item, String contextRootPath) throws Exception {
         name = item.getFieldName(); //파일의 필드 이름 얻기
         fileName = item.getName(); //파일명 얻기
         fileSize = item.getSize(); //파일의 크기 얻기
         
         //업로드 파일명을 현재시간으로 변경후 저장
         String fileExt = fileName.substring(fileName.lastIndexOf("."));
-        String uploadedFileName = System.currentTimeMillis() + fileExt; 
+        String uploadedFileName = "doc-"+System.currentTimeMillis() + fileExt; 
         
         //저장할 절대 경로로 파일 객체 생성
         File uploadedFile = new File(contextRootPath + "/upload/" + uploadedFileName);
         item.write(uploadedFile); //파일 저장
        
         filePath = uploadedFile.getPath();
+        System.out.println(filePath);
     }
     
     private void processFormField(FileItem item) throws Exception{
@@ -113,8 +146,6 @@ public class ElasticExcelUploadServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

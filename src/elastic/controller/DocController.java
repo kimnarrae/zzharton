@@ -8,6 +8,8 @@ import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,8 +31,6 @@ public class DocController {
 	}
 	
 	public String getSearchDocument(String query) {
-
-		String urlPath = "localhost:9200/doc/_search";
 		String result = "";
 		
 		String ip = "localhost";
@@ -59,8 +59,93 @@ public class DocController {
 		return result;
 	}
 	
+	public String insertDocument(JSONArray dataArr) {
+		String result = "";
+		
+		JSONArray resultArr = new JSONArray();
+		
+		String ip = "localhost";
+		Integer port = 9200;
+		String schema = "http";
+		try {
+			//URL url = new URL(urlPath);
+			RestClient restClient = RestClient.builder(new HttpHost(ip,port,schema)).build();
+
+			for(int i=0; i<dataArr.size(); i++) {				
+				JSONObject dataObj = (JSONObject) dataArr.get(i);
+				System.out.println(dataObj);
+				String key = dataObj.get("key").toString();
+				String path = "doc/_doc/"+key;
+				
+				System.out.println(dataObj.get("date").toString());
+				
+				Request request = new Request("POST",path);
+				
+				String query = dataObj.toJSONString();
+				System.out.println(query);
+				if(!"".equals(query)) {
+					request.setJsonEntity(query);
+				}			
+				
+				Response response = restClient.performRequest(request);
+				
+				if(response.getStatusLine().getStatusCode() == 200) {
+					result = EntityUtils.toString(response.getEntity());
+					System.out.println(result);
+					resultArr.add(result);
+				}else {
+					System.out.println(response.getStatusLine().getStatusCode());
+				}				
+			}
+			restClient.close();
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return resultArr.toJSONString();
+	}
+	
+	public String insertDocument(JSONObject dataObj) {
+		String result = "";
+		
+		JSONArray resultArr = new JSONArray();
+		
+		String ip = "localhost";
+		Integer port = 9200;
+		String schema = "http";
+		try {
+			//URL url = new URL(urlPath);
+			RestClient restClient = RestClient.builder(new HttpHost(ip,port,schema)).build();
+				System.out.println(dataObj);
+				String key = dataObj.get("key").toString();
+				String path = "doc/_doc/"+key;
+				
+				Request request = new Request("POST",path);
+				
+				String query = dataObj.toJSONString();
+				System.out.println(query);
+				if(!"".equals(query)) {
+					request.setJsonEntity(query);
+				}			
+				
+				Response response = restClient.performRequest(request);
+				
+				if(response.getStatusLine().getStatusCode() == 200) {
+					result = EntityUtils.toString(response.getEntity());
+					resultArr.add(result);
+				}else {
+					System.out.println(response.getStatusLine().getStatusCode());
+				}				
+			restClient.close();
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return resultArr.toJSONString();
+	}	
+	
 	public static void main(String[] args) {
-		String query = "{\"size\":10000,\"query\":{\"bool\":{\"must\":[{\"wildcard\":{\"writer\":\"KBS*\"}},{\"match\":{\"contents\":\"코로나\"}}]}},\"from\":0,\"sort\":[{\"date\":\"desc\"}],\"aggs\":{\"group_by_state\":{\"terms\":{\"field\":\"date\"},\"aggs\":{\"date_count\":{\"value_count\":{\"field\":\"date\"}}}}}}";
+		String query = "{\"size\":1000,\"query\":{\"bool\":{\"must\":[{\"wildcard\":{\"writer\":\"KBS*\"}},{\"match\":{\"contents\":\"코로나\"}}]}},\"from\":0,\"sort\":[{\"date\":\"desc\"}],\"aggs\":{\"group_by_state\":{\"terms\":{\"field\":\"date\"},\"aggs\":{\"date_count\":{\"value_count\":{\"field\":\"date\"}}}}}}";
 		DocController docController = new DocController();
 		String result = docController.getSearchDocument(query);
 		System.out.println(result);
