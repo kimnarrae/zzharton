@@ -13,7 +13,13 @@ import org.json.simple.JSONObject;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
+
+
 public class DocController {
+	private static final Log logger = LogFactory.getLog(DocController.class);
+	
 	private RestTemplate restTemplate = null;
 	private HttpComponentsClientHttpRequestFactory factory = null;
 	
@@ -39,22 +45,21 @@ public class DocController {
 		try {
 			//URL url = new URL(urlPath);
 			RestClient restClient = RestClient.builder(new HttpHost(ip,port,schema)).build();
-			Request request = new Request("POST","doc/_search/");
-			if(!"".equals(query)) {
-				request.setJsonEntity(query);
-			}			
+			Request request = new Request("POST","testdoc/_search/");
+			
+			request.setJsonEntity(query);
 			Response response = restClient.performRequest(request);
 			
 			if(response.getStatusLine().getStatusCode() == 200) {
 				result = EntityUtils.toString(response.getEntity());
 			}else {
-				System.out.println(response.getStatusLine().getStatusCode());
+				logger.debug(response.getStatusLine().getStatusCode()+ " ");
 			}
 			
 			restClient.close();
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			logger.debug(e.getMessage());
 		}
 		return result;
 	}
@@ -73,16 +78,16 @@ public class DocController {
 
 			for(int i=0; i<dataArr.size(); i++) {				
 				JSONObject dataObj = (JSONObject) dataArr.get(i);
-				System.out.println(dataObj);
+				logger.debug("dataObj : "+dataObj.toJSONString());
 				String key = dataObj.get("key").toString();
-				String path = "doc/_doc/"+key;
+				String path = "testdoc/_doc/"+key;
 				
-				System.out.println(dataObj.get("date").toString());
+				logger.debug("date => "+dataObj.get("date").toString());
 				
 				Request request = new Request("POST",path);
 				
 				String query = dataObj.toJSONString();
-				System.out.println(query);
+				logger.debug("query => "+query);
 				if(!"".equals(query)) {
 					request.setJsonEntity(query);
 				}			
@@ -91,16 +96,16 @@ public class DocController {
 				
 				if(response.getStatusLine().getStatusCode() == 200) {
 					result = EntityUtils.toString(response.getEntity());
-					System.out.println(result);
+					logger.debug("result => "+result);
 					resultArr.add(result);
 				}else {
-					System.out.println(response.getStatusLine().getStatusCode());
+					logger.debug(response.getStatusLine().getStatusCode() + " ");
 				}				
 			}
 			restClient.close();
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			logger.debug(e.getMessage());
 		}
 		return resultArr.toJSONString();
 	}
@@ -116,14 +121,14 @@ public class DocController {
 		try {
 			//URL url = new URL(urlPath);
 			RestClient restClient = RestClient.builder(new HttpHost(ip,port,schema)).build();
-				System.out.println(dataObj);
+			logger.debug("dataObj => "+dataObj);
 				String key = dataObj.get("key").toString();
-				String path = "doc/_doc/"+key;
+				String path = "testdoc/_doc/"+key;
 				
 				Request request = new Request("POST",path);
 				
 				String query = dataObj.toJSONString();
-				System.out.println(query);
+				logger.debug("query => "+query);
 				if(!"".equals(query)) {
 					request.setJsonEntity(query);
 				}			
@@ -134,12 +139,12 @@ public class DocController {
 					result = EntityUtils.toString(response.getEntity());
 					resultArr.add(result);
 				}else {
-					System.out.println(response.getStatusLine().getStatusCode());
+					logger.debug(response.getStatusLine().getStatusCode() + " ");
 				}				
 			restClient.close();
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			logger.debug(e.getMessage());
 		}
 		return resultArr.toJSONString();
 	}	

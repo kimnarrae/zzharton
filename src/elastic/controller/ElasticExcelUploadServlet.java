@@ -14,7 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.json.simple.JSONObject;
+
+import com.hazelcast.logging.ILogger;
+import com.hazelcast.logging.Logger;
 
 import elastic.service.InsertDocumentService;
 import upload.service.ExcelUploadService;
@@ -24,6 +29,7 @@ import upload.service.ExcelUploadService;
  */
 @WebServlet("/InsertExcelDocument")
 public class ElasticExcelUploadServlet extends HttpServlet {
+	private static final Log logger = LogFactory.getLog(ElasticExcelUploadServlet.class);
 	private static final long serialVersionUID = 1L;
 	
 	private static String dataType = "";
@@ -92,7 +98,7 @@ public class ElasticExcelUploadServlet extends HttpServlet {
         	fgData = false;
         }
         
-        System.out.println(filePath);
+        logger.debug("filePath => "+filePath);
         // result data를 만든다.
         response.setContentType("text/html; charset=utf-8");
  

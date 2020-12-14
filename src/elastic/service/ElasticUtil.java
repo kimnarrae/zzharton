@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -23,6 +25,8 @@ import edu.emory.mathcs.backport.java.util.Arrays;
 import elastic.controller.DocController;
 
 public class ElasticUtil {
+	
+	private static final Log logger = LogFactory.getLog(ElasticUtil.class);
 	
 	public static String checkFileType(String filePath) {
 		File file = new File(filePath);
@@ -262,7 +266,7 @@ public class ElasticUtil {
 			resultArr.add((JSONObject) result.get("_source"));
 		}
 		//첫번째 result Arr에는 정보를 넣는다.
-		System.out.println(resultArr.toJSONString());
+		logger.debug(resultArr.toJSONString());
 		return resultArr.toJSONString();
 	}
 
@@ -276,13 +280,13 @@ public class ElasticUtil {
 //		searchObj.put("writer", "KBS");
 		
 		
-		ElasticUtil util = new ElasticUtil();		
-		String query = util.setQuery(searchObj);
-		
-		DocController docController = new DocController();
-		String result = docController.getSearchDocument(query);
-		JSONObject resultObj = util.setResultStrToJSONObject(result);
-		String resultData = util.setResult(resultObj);
+//		ElasticUtil util = new ElasticUtil();		
+//		String query = util.setQuery(searchObj);
+//		
+//		DocController docController = new DocController();
+//		String result = docController.getSearchDocument(query);
+//		JSONObject resultObj = util.setResultStrToJSONObject(result);
+//		String resultData = util.setResult(resultObj);
 	}
 
 }

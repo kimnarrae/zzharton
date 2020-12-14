@@ -31,9 +31,10 @@
 		position: sticky;top: 0;
 	}
 	.srh-btn{
- 		position: absolute;bottom: 8px;right: 10px;display: inline-block;
+/*  		position: absolute;bottom: 8px;right: 10px;display: inline-block; */
    	 	cursor: pointer;
     	vertical-align: middle;
+    	position: absolute;top: 208px;right: 64px;display: inline-block;
 	}
 	.srh-btn a{
 		padding: 0 15px 0 8px;
@@ -132,10 +133,37 @@
 $(document).ready(function() {	
 	fnEvent();
 	fnDrawGrid();
-	$("#btnSearch").click();
+//	$("#btnSearch").click();
 });
 
 function fnEvent(){
+	$(".keywordDown").click(function(){
+		var idx = $(".keywordDown").index(this);
+	    var formData = new FormData(document.getElementById('searchForm'));
+	    var keyword = $(".keyword-contents").eq(idx).text();
+	    if(keyword == ""){
+	    	keyword = "{\"종영\":2,\"정작\":1,\"안전성\":1,\"유행하\":1,\"숨지자\":1,\"보류하기\":1,\"사례\":3,\"무료\":1,\"29일\":2,\"사망자\":1,\"앵커\":1,\"접종인원\":1,\"보류할\":1,\"하자\":1,\"운데\":1,\"조사\":1,\"확보\":1,\"지속하\":1,\"전체\":1,\"위해서\":1,\"리포트\":1,\"사망의\":1,\"의료기관\":1,\"대구경북\":1,\"중단하기\":1,\"접종했지\":1,\"질병관리청\":2,\"사흘\":1,\"하더라\":1,\"예방\":4,\"코나19\":1,\"현장\":1,\"22일\":1,\"자치단체\":2,\"낮아\":1,\"긴급\":1,\"아닌지\":1,\"성구\":1,\"26\":1,\"커지\":3,\"대구시\":3,\"7천\":1,\"대한\":3,\"트윈\":1,\"접종의\":1,\"정경\":1,\"지금\":1,\"나오니까\":1,\"19일\":1,\"질병관리청장\":1,\"않았\":1,\"권하\":1,\"매우\":1,\"줄었\":1,\"3백\":1,\"의원\":1,\"넘게\":1,\"대해\":2,\"8천\":1,\"꺼리\":1,\"의사회장\":1,\"권했\":1,\"함께\":1,\"회원들게\":1,\"우려\":1,\"하지\":3,\"접종자\":1,\"기자\":1,\"계속하겠다\":1,\"대구경북지역의\":1,\"청군\":1,\"동네\":1,\"밝혔\":1,\"하루\":1,\"접종\":12,\"인플루엔자\":1,\"계속하기\":1,\"일부\":2,\"검토한\":1,\"데믹\":1,\"실제\":1,\"인성\":1,\"뉴스\":1,\"닷새\":1,\"김천시\":1,\"사망\":3,\"않았다\":1,\"독감백신\":1,\"26건\":1,\"필요하\":1,\"한명\":1,\"맞지\":1,\"26일부터\":1,\"사흘간\":1,\"접종후\":1,\"직접적인\":1,\"의사회\":2,\"분석한\":1,\"겁니다\":1,\"취지\":1,\"지난\":1,\"없다\":1,\"좀더\":1,\"포항시\":1,\"포함해\":1,\"걱정\":1,\"갈수록\":1,\"불안\":1,\"백신\":5,\"대구의\":1,\"없었\":1,\"상당히\":1,\"확인되지\":1,\"여기\":1,\"연관성\":2,\"KBS\":1,\"혼란\":2,\"엇박자\":1,\"공지했\":1,\"아직\":1,\"해야하\":1,\"그런\":1,\"신서동\":1,\"중단\":3,\"어제\":1,\"전국\":2,\"40여\":1,\"보류\":1,\"변희환\":1,\"일시\":1,\"독감\":8,\"다음\":1,\"산발적\":1}";
+	    }	    
+	   // formData.append("keywordContents",$(".keyword-contents").eq(idx).text());
+	    formData.append("keywordContents",keyword);
+ 	    
+	    $.ajax({
+	        cache : false,
+	        url : "/zzharton/KeywordDownload",
+	        data:formData,
+			type: 'POST',
+	        enctype: "multipart/form-data",
+	        processData: false,
+	        contentType: false,
+	        success : function(data) {
+	        	alert(data)
+	        },
+	        error : function(xhr, status) {
+	            alert(xhr + " : " + status);
+	            $("#btn-refresh").click();
+	        }
+	    });	 
+	});
 	$("#btnSearch").click(function(){
 		fnGetDocData();
 	});
@@ -261,8 +289,8 @@ function setResultTable(jsonData){
 				html += "	<td>"+resultObj.writer+"</td>";
 				html += "	<td><div class='contents-area' title="+resultObj.contents+">"+resultObj.contents+"</div></td>";
 				html += "	<td>"+resultObj.date+"</td>";
-				html += "	<td><div class='contents-area' title="+resultObj.keyword_contents+">"+resultObj.keyword_contents+"</div></td>";
-				html += '	<td><span class="fileDown" style="margin-top: 3px;cursor:pointer;"><a><img src="/zzharton/page/image/common/file-download.png" id="img-file-download"></a></span></td>';
+				html += "	<td><div class='contents-area' title="+resultObj.keyword_contents+">"+resultObj.keyword_contents+"</div><input type='hidden' class='keyword-contents' value='"+resultObj.keyword_contents+"'/></td>";
+				html += '	<td><span class="keywordDown" style="margin-top: 3px;cursor:pointer;"><a><img src="/zzharton/page/image/common/file-download.png" id="img-file-download"></a></span></td>';
 			
 			$("#grid-result").append(html);
 			
@@ -401,7 +429,7 @@ function fnDrawGrid(){
 							        	</tr>							        	
 							        	<tr>
 							        		<th colspan="2">
-							        			<span class="srh-btn" id="btnSearch"><a>검색</a></span>
+							        			<!-- <span class="srh-btn" id="btnSearch"><a>검색</a></span> -->
 							        			<!-- <input type="submit" value="검색" /> -->
 							        		</th>
 							        	</tr>					        
@@ -434,6 +462,7 @@ function fnDrawGrid(){
 						    	</table>
 							</div>
 							<h3 style="padding:0px;margin-top:30px;">원문 정보</h3>	
+							<span style="float:right;" class="srh-btn" id="btnSearch"><a>검색</a></span>
 							<div style="height:20px;margin-top:10px;position: relative;border: 1px solid #c3c4c7;background: #f7f8fc;padding: 9px 15px;margin-bottom: 12px;">
 						    	<table>
 						        	<colgroup>
@@ -483,7 +512,26 @@ function fnDrawGrid(){
 					        		<col style="width:16%">
 					        		<col style="width:2%">
 					        	</colgroup>
-					        	<tbody id="grid-result" style="table-layout: fixed;"></tbody>
+					        	<tbody id="grid-result" style="table-layout: fixed;">
+<!-- 					        		<tr>
+						        		<td>문서키</td>
+						        		<td>수집코드</td>
+						        		<td>글쓴이</td>
+						        		<td>문서내용</td>
+						        		<td>작성일자</td>
+						        		<td><div class='contents-area'><input type='hidden' class='keyword-contents' value="키워드결과2"/></div></td>
+						        		<td><span class="keywordDown" style="margin-top: 3px;cursor:pointer;"><a><img src="/zzharton/page/image/common/file-download.png" id="img-file-download"></a></span></td>					
+						        	</tr>
+					        		<tr>
+						        		<td>문서키</td>
+						        		<td>수집코드</td>
+						        		<td>글쓴이</td>
+						        		<td>문서내용</td>
+						        		<td>작성일자</td>
+						        		<td><div class='contents-area'><input type='hidden' class='keyword-contents' value="키워드결과1"/></div></td>
+						        		<td><span class="keywordDown" style="margin-top: 3px;cursor:pointer;"><a><img src="/zzharton/page/image/common/file-download.png" id="img-file-download"></a></span></td>					
+						        	</tr> --> 						        	        		
+					        	</tbody>
 					        </table> 
 					        </div>					        
 					    </div>

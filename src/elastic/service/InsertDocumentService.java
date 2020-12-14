@@ -6,10 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -23,6 +26,8 @@ import org.json.simple.JSONObject;
 import elastic.controller.DocController;
 
 public class InsertDocumentService {
+	private static final Log logger = LogFactory.getLog(InsertDocumentService.class);
+	
 	static FileInputStream fis = null;		
 	static Workbook wb = null;
 	static FilenameUtils fu = new FilenameUtils();
@@ -62,14 +67,14 @@ public class InsertDocumentService {
 				
 				if(!"".equals(key) && !"".equals(contents)) {
 					String keywordContents = getKeywordJson(contents);
-					
+
 					dataObj.put("key", key);
 					dataObj.put("collect", collect);
 					dataObj.put("writer", writer);
 					dataObj.put("title", title);
 					dataObj.put("contents", contents);
 					dataObj.put("date", dtDate);
-					dataObj.put("keyword_contents", keywordContents);
+					dataObj.put("keyword_contents", "\""+keywordContents+"\"");
 					
 					DocController dc = new DocController();
 					dc.insertDocument(dataObj);
@@ -96,6 +101,34 @@ public class InsertDocumentService {
 		List<String> keywordList = keywordContents(contents);
 		Map<String,Integer> map = new HashMap<>();
 		
+		JSONObject jsonObject = new JSONObject();
+		
+		
+/*		if(keywordList.size() > 0) {
+			for(int i=0; i<keywordList.size(); i++) {
+				String key = keywordList.get(i);
+				if(!"".equals(key) && key.length() > 1 && key != null) {
+//					if(map.containsKey(key)) {
+//						map.put(key,map.get(key)+1);
+//					}else {
+//						map.put(key, 1);
+//					}
+					//System.out.println("key : "+key);
+					//System.out.println(jsonObject.toJSONString());
+					if(jsonObject.containsKey(key)) {
+						Integer addValue = (Integer) jsonObject.get(key)+1;
+						jsonObject.put(key,addValue);
+					}else {
+						jsonObject.put(key, 1);
+					}
+					//jsonArray.add(jsonObject)
+				}
+			}	
+		}
+		System.out.println("=====================");
+		System.out.println(jsonObject.toJSONString());
+		System.out.println("=====================");	
+		return jsonObject.toJSONString();*/
 		if(keywordList.size() > 0) {
 			for(int i=0; i<keywordList.size(); i++) {
 				String key = keywordList.get(i);
@@ -194,7 +227,7 @@ public class InsertDocumentService {
 	}	
 	
 	public static void main(String[] args) {
-		String filePath = "D:\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\zzharton\\upload\\doc-1607782659789.xlsx";
+		String filePath = "D:\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\zzharton\\upload\\doc-1607951120087.xlsx";
 		InsertDocumentService.insertElasticDoc(filePath);
 	}
 }
